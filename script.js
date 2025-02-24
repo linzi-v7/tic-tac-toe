@@ -24,8 +24,13 @@ function createPlayer(name, symbol)
     {
         return cell;
     }
+    function resetChosenCell()
+    {
+        cell[0] = null;
+        cell[1] = null;
+    }
 
-    return { makeMove: makeMove, getChosenCell, symbol, playerName }
+    return { makeMove, getChosenCell, symbol, playerName, resetChosenCell }
 }
 
 
@@ -55,20 +60,31 @@ const GameBoard = (function ()
     {
         return isEnd;
     }
+
     function updateCounter(row, column, symbol)
     {
+
+        //cast to integer to be able to inter antidiag condition
+        row = Number(row);
+        column = Number(column);
 
         const increment = symbol === 'x' ? 1 : -1;
 
         rowCounter[row] += increment;
         colCounter[column] += increment;
+        console.log(row + column)
 
+        //update main diagonal counter
         if (row == column)
         {
+            console.log("main diag");
             diagCounter[0] += increment;
         }
-        else if ((row + column) == (board.length - 1)) //antidiagonal condition
+
+        //update antidiagonal counter
+        if ((row + column) == 2) 
         {
+            console.log("here");
             diagCounter[1] += increment;
         }
 
@@ -139,8 +155,9 @@ const GameController = (function ()
     {
         GameBoard.printBoard();
         console.log(`Active Player ${activePlayer.playerName}`);
-        activePlayer.makeMove();
+        activePlayer.makeMove(); //need to loop until player makes valid choice (not used or null input)
         const chosenCell = activePlayer.getChosenCell();
+        console.log(chosenCell);
         const row = chosenCell[0];
         const column = chosenCell[1];
         if (row === null || column === null)
@@ -149,6 +166,7 @@ const GameController = (function ()
         }
         GameBoard.setCell(row, column, activePlayer.symbol)
         GameBoard.updateCounter(row, column, activePlayer.symbol);
+        activePlayer.resetChosenCell();
         console.log(" ")
         GameBoard.printBoard();
 
