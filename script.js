@@ -5,7 +5,7 @@ function createPlayer(name, symbol)
 
     if (symbol !== 'x' && symbol !== 'o')
     {
-        console.log("Invalid Token! Player Must Choose X or O");
+        console.log("Invalid Symbol! Player Must Choose X or O");
         return;
     }
 
@@ -68,19 +68,16 @@ const GameBoard = (function ()
 
         rowCounter[row] += increment;
         colCounter[column] += increment;
-        console.log(row + column)
 
         //update main diagonal counter
         if (row == column)
         {
-            console.log("main diag");
             diagCounter[0] += increment;
         }
 
         //update antidiagonal counter
         if ((row + column) == 2) 
         {
-            console.log("here");
             diagCounter[1] += increment;
         }
 
@@ -131,7 +128,7 @@ const GameController = (function ()
     ];
 
     let activePlayer = players[0];
-    let moveCount = 0; // Track number of moves
+    let moveCount = 0; // Track number of moves (max = n^2 where n = board length)
 
     function switchActivePlayer()
     {
@@ -198,16 +195,15 @@ const GameController = (function ()
             GameBoard.rowCounter[row] === 3 ||
             GameBoard.colCounter[column] === 3 ||
             GameBoard.diagCounter[0] === 3 ||
-            GameBoard.diagCounter[1] === 3
-        )
+            GameBoard.diagCounter[1] === 3)
         {
             return 1; // X wins
-        } else if (
+        }
+        else if (
             GameBoard.rowCounter[row] === -3 ||
             GameBoard.colCounter[column] === -3 ||
             GameBoard.diagCounter[0] === -3 ||
-            GameBoard.diagCounter[1] === -3
-        )
+            GameBoard.diagCounter[1] === -3)
         {
             return 2; // O wins
         }
@@ -222,6 +218,7 @@ const GameController = (function ()
             !GameBoard.colCounter.some(val => Math.abs(val) + (3 - moveCount / 2) >= 3) &&
             !(Math.abs(GameBoard.diagCounter[0]) + (3 - moveCount / 2) >= 3) &&
             !(Math.abs(GameBoard.diagCounter[1]) + (3 - moveCount / 2) >= 3);
+
     }
 
     return { playRound };
