@@ -1,4 +1,55 @@
 
+const DisplayController = (function ()
+{
+
+    const gameContainer = document.querySelector(".game-container");
+
+    function displayBoard()
+    {
+        const currentBoard = GameBoard.getBoard();
+
+        for (let i = 0; i < currentBoard.length; i++)
+        {
+            const row = currentBoard[i];
+            for (let j = 0; j < row.length; j++)
+            {
+                const element = row[j];
+
+                addBox(i, j, element);
+
+            }
+
+        }
+    }
+
+    function addBox(row, column, symbol)
+    {
+        const square = document.createElement("div");
+        square.setAttribute("data-row", `${row}`)
+        square.setAttribute("data-column", `${column}`)
+
+        switch (symbol)
+        {
+            case 'x':
+                square.innerText = "x"
+                break;
+            case 'o':
+                square.innerText = "o"
+                break;
+            default:
+                square.innerText = "empty"
+                break;
+        }
+
+        gameContainer.appendChild(square);
+    }
+
+
+    return { displayBoard }
+
+})();
+
+
 function createPlayer(name, symbol)
 {
     const playerName = name;
@@ -32,7 +83,6 @@ function createPlayer(name, symbol)
 
     return { makeMove, getChosenCell, symbol, playerName, resetChosenCell }
 }
-
 
 
 const GameBoard = (function ()
@@ -226,8 +276,10 @@ const GameController = (function ()
 
 
 
-while (GameBoard.getEndStatus() == false)
-{
-    GameController.playRound();
+// while (GameBoard.getEndStatus() == false)
+// {
+//     //GameController.playRound();
 
-}
+// }
+
+DisplayController.displayBoard();

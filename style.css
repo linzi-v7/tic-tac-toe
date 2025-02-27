@@ -1,0 +1,47 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+}
+
+.grid-container {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: 1fr 3fr 1fr;
+}
+
+.grid-container>* {
+    border: 2px solid red;
+}
+
+.grid-container header {
+    grid-column: 1/4;
+}
+
+.grid-container .action-buttons-area {
+    grid-column: 2/3;
+    grid-row: 3/4;
+}
+
+.grid-container .player-section {
+    grid-row: 2/4;
+}
+
+.game-container {
+    border: 2px solid black;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+section.game-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
