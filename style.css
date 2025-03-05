@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Jaro:opsz@6..72&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
 * {
     margin: 0;
     padding: 0;
@@ -5,43 +7,112 @@
 }
 
 body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f0f0;
     height: 100vh;
 }
 
 .grid-container {
-    width: 100%;
-    height: 100%;
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
-    grid-template-rows: 1fr 3fr 1fr;
+    grid-template-rows: auto 1fr auto;
+    gap: 10px;
+    padding: 20px;
+    height: 100%;
 }
 
-.grid-container>* {
-    border: 2px solid red;
+header {
+    grid-column: 1 / -1;
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+    padding-bottom: 10px;
 }
 
-.grid-container header {
-    grid-column: 1/4;
+.player-section {
+    grid-row: 2 / 3;
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.grid-container .action-buttons-area {
-    grid-column: 2/3;
-    grid-row: 3/4;
+.player-one-section {
+    grid-column: 1 / 2;
 }
 
-.grid-container .player-section {
-    grid-row: 2/4;
+.player-two-section {
+    grid-column: 3 / 4;
 }
 
+.game-section {
+    grid-column: 2 / 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.game-section p {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+/* Enlarged Tic Tac Toe board */
 .game-container {
-    border: 2px solid black;
     display: grid;
-    grid-template-rows: 1fr 1fr 1fr;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(3, 150px);
+    grid-template-rows: repeat(3, 150px);
+    gap: 5px;
+    background-color: #fff;
+    padding: 5px;
+    border: 2px solid #333;
+    border-radius: 8px;
 }
 
-section.game-section {
+.game-container div {
+    background-color: #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.game-container div:hover {
+    background-color: #d0d0d0;
+}
+
+/* Bigger Restart button */
+.action-buttons-area {
+    grid-column: 1 / -1;
     display: flex;
     justify-content: center;
-    align-items: center;
+    gap: 20px;
+}
+
+.action-buttons-area button {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    border: none;
+    background-color: #333;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.action-buttons-area button:hover {
+    background-color: #555;
+}
+
+/* Highlight winner */
+.player-section.winner {
+    background-color: #d4edda;
+    border: 2px solid #28a745;
 }

@@ -5,48 +5,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic Tac Toe</title>
-
     <link rel="stylesheet" href="./style.css">
     <script src="./script.js" defer></script>
 </head>
 
 <body>
-
     <div class="grid-container">
 
-        <header> TIC TAC TOE</header>
+        <header>TIC TAC TOE</header>
 
         <div class="player-one-section player-section">
 
-            <p>Player One</p>
-            <p>Name :</p>
-            <p>Symbol : X</p>
-            <p>Won/Loss</p>
+            <p><strong>Player One</strong></p>
+            <p>Name: <input type="text" id="player1-name" placeholder="Enter Name"></p>
+            <p>Symbol: X</p>
+            <p id="player1-status">Won/Loss: 0/0</p>
 
         </div>
+
         <section class="game-section">
 
-            <div class="game-container">
+            <p>Active Player: <span id="active-player">Player One</span></p>
 
+            <div class="game-container">
+                <!-- Game board cells will be rendered here -->
             </div>
 
         </section>
 
         <div class="action-buttons-area">
-            <button>start</button>
-            <button>start</button>
+
+            <button>Restart</button>
+
         </div>
 
         <div class="player-two-section player-section">
 
-            <p>Player Two</p>
-            <p>Name :</p>
-            <p>Symbol : X</p>
-            <p>Won/Loss</p>
+            <p><strong>Player Two</strong></p>
+            <p>Name: <input type="text" id="player2-name" placeholder="Enter Name"></p>
+            <p>Symbol: O</p>
+            <p id="player2-status">Won/Loss: 0/0</p>
 
         </div>
-    </div>
 
+    </div>
 
 </body>
 
