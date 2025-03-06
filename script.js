@@ -18,9 +18,11 @@ const DisplayController = (function ()
 
     restartButton.addEventListener("click", function () 
     {
+        console.log(GameBoard.getRowCounter());
         GameController.resetGame();
         DisplayController.displayBoard();
         updateActivePlayer();
+        console.log(GameBoard.getRowCounter());
     })
 
     // Update player names when inputs change
@@ -212,16 +214,17 @@ const GameBoard = (function ()
 
     function resetBoard()
     {
-        setEndStatus(false);
-        rowCounter = [0, 0, 0];
-        colCounter = [0, 0, 0];
-        diagCounter = [0, 0];
-
         board = [
             [null, null, null],
             [null, null, null],
             [null, null, null]
         ];
+
+        rowCounter = [0, 0, 0];
+        colCounter = [0, 0, 0];
+        diagCounter = [0, 0];
+
+        setEndStatus(false);
     }
 
     function printBoard()
@@ -235,9 +238,14 @@ const GameBoard = (function ()
         }
     }
 
+    function getRowCounter() { return rowCounter; }
+    function getColCounter() { return colCounter; }
+    function getDiagCounter() { return diagCounter; }
+
+
     return {
         getEndStatus, getBoard, setEndStatus, setCell, printBoard, updateCounter,
-        rowCounter, colCounter, diagCounter, resetBoard
+        getRowCounter, getColCounter, getDiagCounter, resetBoard
     };
 })();
 
@@ -266,6 +274,7 @@ const GameController = (function ()
     {
         if (GameBoard.getEndStatus() === true)
         {
+            console.log(GameBoard.getEndStatus());
             alert("Game Ended! Press Restart To Continue!");
             return;
         }
@@ -293,7 +302,6 @@ const GameController = (function ()
         moveCount++;
 
         DisplayController.displayBoard();
-
         gameResult = checkWin(row, column);
 
 
@@ -328,18 +336,18 @@ const GameController = (function ()
     function checkWin(row, column)
     {
         if (
-            GameBoard.rowCounter[row] === 3 ||
-            GameBoard.colCounter[column] === 3 ||
-            GameBoard.diagCounter[0] === 3 ||
-            GameBoard.diagCounter[1] === 3
+            GameBoard.getRowCounter()[row] === 3 ||
+            GameBoard.getColCounter()[column] === 3 ||
+            GameBoard.getDiagCounter()[0] === 3 ||
+            GameBoard.getDiagCounter()[1] === 3
         )
         {
             return 1; // X wins
         } else if (
-            GameBoard.rowCounter[row] === -3 ||
-            GameBoard.colCounter[column] === -3 ||
-            GameBoard.diagCounter[0] === -3 ||
-            GameBoard.diagCounter[1] === -3
+            GameBoard.getRowCounter()[row] === -3 ||
+            GameBoard.getColCounter()[column] === -3 ||
+            GameBoard.getDiagCounter()[0] === -3 ||
+            GameBoard.getDiagCounter()[1] === -3
         )
         {
             return 2; // O wins
@@ -349,10 +357,10 @@ const GameController = (function ()
 
     function checkEarlyTie()
     {
-        return !GameBoard.rowCounter.some(val => Math.abs(val) + (3 - moveCount / 2) >= 3) &&
-            !GameBoard.colCounter.some(val => Math.abs(val) + (3 - moveCount / 2) >= 3) &&
-            !(Math.abs(GameBoard.diagCounter[0]) + (3 - moveCount / 2) >= 3) &&
-            !(Math.abs(GameBoard.diagCounter[1]) + (3 - moveCount / 2) >= 3);
+        return !GameBoard.getRowCounter().some(val => Math.abs(val) + (3 - moveCount / 2) >= 3) &&
+            !GameBoard.getColCounter().some(val => Math.abs(val) + (3 - moveCount / 2) >= 3) &&
+            !(Math.abs(GameBoard.getDiagCounter()[0]) + (3 - moveCount / 2) >= 3) &&
+            !(Math.abs(GameBoard.getDiagCounter()[1]) + (3 - moveCount / 2) >= 3);
     }
 
     function getPlayers()
@@ -365,7 +373,7 @@ const GameController = (function ()
         GameBoard.resetBoard();
         activePlayer = players[0];
         moveCount = 0;
-        DisplayController.displayBoard;
+        DisplayController.displayBoard();
         gameResult = -1;
     }
 
