@@ -16,13 +16,15 @@ const DisplayController = (function ()
         GameController.playRound();
     });
 
+
+    //Restarting the game
     restartButton.addEventListener("click", function () 
     {
-        console.log(GameBoard.getRowCounter());
+        document.querySelector(".player-one-section").classList.remove("winner", "tie", "loser");
+        document.querySelector(".player-two-section").classList.remove("winner", "tie", "loser");
         GameController.resetGame();
         DisplayController.displayBoard();
         updateActivePlayer();
-        console.log(GameBoard.getRowCounter());
     })
 
     // Update player names when inputs change
@@ -305,25 +307,33 @@ const GameController = (function ()
         gameResult = checkWin(row, column);
 
 
-        if (gameResult === 1) //X wins
+        if (gameResult === 1) // X wins
         {
             players[0].addWin();
             document.querySelector(".player-one-section").classList.add("winner");
+            document.querySelector(".player-two-section").classList.add("loser");
             document.getElementById("player1-status").innerText = "Winner! Wins: " + players[0].getWins();
+            document.querySelector(".game-status").innerText = players[0].getName() + " Won!";
             GameBoard.setEndStatus(true);
         }
         else if (gameResult === 2) // O wins
         {
             players[1].addWin();
             document.querySelector(".player-two-section").classList.add("winner");
+            document.querySelector(".player-one-section").classList.add("loser");
             document.getElementById("player2-status").innerText = "Winner! Wins: " + players[1].getWins();
+            document.querySelector(".game-status").innerText = players[1].getName() + " Won!";
             GameBoard.setEndStatus(true);
         }
-        else if (moveCount >= 7 && checkEarlyTie()) //tie
+        else if (moveCount >= 7 && checkEarlyTie()) // tie
         {
             alert("It's a tie! No possible wins left.");
+            document.querySelector(".player-one-section").classList.add("tie");
+            document.querySelector(".player-two-section").classList.add("tie");
+            document.getElementById("active-player").innerText = "It's a tie!";
             GameBoard.setEndStatus(true);
         }
+
         else //continue game
         {
             switchActivePlayer();

@@ -34,8 +34,48 @@ header {
     grid-row: 2 / 3;
     background-color: #ffffff;
     border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.player-section p {
+    margin: 8px 0;
+    font-size: 1.1rem;
+}
+
+.player-section strong {
+    font-size: 1.4rem;
+    color: #2c3e50;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+}
+
+.player-section input {
+    padding: 8px 12px;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    font-size: 1rem;
+    width: 80%;
+}
+
+.player-section input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+#player1-status,
+#player2-status {
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+    margin-top: auto;
 }
 
 .player-one-section {
@@ -115,4 +155,16 @@ header {
 .player-section.winner {
     background-color: #d4edda;
     border: 2px solid #28a745;
+}
+
+/* Highlight Loser */
+.player-section.loser {
+    background-color: #edd4d4;
+    border: 2px solid #a72828;
+}
+
+/* Tie condition styling */
+.player-section.tie {
+    background-color: #fff9c4;
+    border: 2px solid #ffeb3b;
 }
