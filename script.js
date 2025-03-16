@@ -2,8 +2,10 @@ const DisplayController = (function ()
 {
     const gameContainer = document.querySelector(".game-container");
     const restartButton = document.querySelector('.action-buttons-area button');
-    const activePlayerSpan = document.getElementById("active-player");
+    const statusSpan = document.querySelector(".game-status");
 
+    //list of player statuses, 0 = player1 and 1 = player2
+    const playerStatusList = document.querySelectorAll(".player-status");
 
     gameContainer.addEventListener("click", function (event)
     {
@@ -20,23 +22,25 @@ const DisplayController = (function ()
     //Restarting the game
     restartButton.addEventListener("click", function () 
     {
+        //remove status styling if exists
         document.querySelector(".player-one-section").classList.remove("winner", "tie", "loser");
         document.querySelector(".player-two-section").classList.remove("winner", "tie", "loser");
+
         GameController.resetGame();
         DisplayController.displayBoard();
-        updateActivePlayer();
+        updateGameStatusArea();
     })
 
     // Update player names when inputs change
     document.getElementById("player1-name").addEventListener("change", function ()
     {
         GameController.getPlayers()[0].setName(this.value || "Player One");
-        updateActivePlayer();
+        updateGameStatusArea();
     });
     document.getElementById("player2-name").addEventListener("change", function ()
     {
         GameController.getPlayers()[1].setName(this.value || "Player Two");
-        updateActivePlayer();
+        updateGameStatusArea();
     });
 
 
@@ -79,13 +83,35 @@ const DisplayController = (function ()
     }
 
 
-    function updateActivePlayer()
+    function updateGameStatusArea(text = "empty")
     {
-        activePlayerSpan.innerText = GameController.getActivePlayer().getName();
+        //default behaviour when switching active players
+        if (text == "empty")
+        {
+            statusSpan.innerText = "Active Player: " + GameController.getActivePlayer().getName();
+        }
+        else
+        {
+            //use this in case of announcing other stuff like winning,etc..
+            statusSpan.innerText = text;
+        }
+    }
+
+    function updatePlayerStatus()
+    {
+        const players = GameController.getPlayers();
+        //only 2 players, [0] = Player1, [1] = Player2
+        for (let i = 0; i < 2; i++)
+        {
+            playerStatusList[i].innerText = `Won/Loss: ${players[i].getWins()}/${players[i].getLosses()}`;
+
+        }
     }
 
 
-    return { displayBoard, updateActivePlayer };
+
+
+    return { displayBoard, updateGameStatusArea, updatePlayerStatus };
 })();
 
 function createPlayer(name, symbol)
@@ -310,37 +336,36 @@ const GameController = (function ()
         if (gameResult === 1) // X wins
         {
             players[0].addWin();
+            players[1].addLoss();
             document.querySelector(".player-one-section").classList.add("winner");
             document.querySelector(".player-two-section").classList.add("loser");
-            document.getElementById("player1-status").innerText = "Winner! Wins: " + players[0].getWins();
-            document.querySelector(".game-status").innerText = players[0].getName() + " Won!";
+            DisplayController.updateGameStatusArea(players[0].getName() + " Won!");
+            DisplayController.updatePlayerStatus();
             GameBoard.setEndStatus(true);
         }
         else if (gameResult === 2) // O wins
         {
             players[1].addWin();
+            players[0].addLoss();
             document.querySelector(".player-two-section").classList.add("winner");
             document.querySelector(".player-one-section").classList.add("loser");
-            document.getElementById("player2-status").innerText = "Winner! Wins: " + players[1].getWins();
-            document.querySelector(".game-status").innerText = players[1].getName() + " Won!";
+            DisplayController.updateGameStatusArea(players[1].getName() + " Won!");
+            DisplayController.updatePlayerStatus();
             GameBoard.setEndStatus(true);
         }
         else if (moveCount >= 7 && checkEarlyTie()) // tie
         {
-            alert("It's a tie! No possible wins left.");
             document.querySelector(".player-one-section").classList.add("tie");
             document.querySelector(".player-two-section").classList.add("tie");
-            document.getElementById("active-player").innerText = "It's a tie!";
+            DisplayController.updateGameStatusArea("It's A Tie!");
             GameBoard.setEndStatus(true);
         }
-
         else //continue game
         {
             switchActivePlayer();
+            activePlayer.resetChosenCell();
+            DisplayController.updateGameStatusArea();
         }
-
-        activePlayer.resetChosenCell();
-        DisplayController.updateActivePlayer();
     }
 
     function checkWin(row, column)
@@ -392,6 +417,6 @@ const GameController = (function ()
 
 // Initial render and active player display update
 DisplayController.displayBoard();
-DisplayController.updateActivePlayer();
+DisplayController.updateGameStatusArea();
 
 
